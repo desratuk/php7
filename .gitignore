@@ -1,0 +1,10 @@
+.cache/
+out/
+release/
+artifacts/
+sources/
+__pycache__/
+*.pyc
+.DS_Store
+sources72/
+out72/

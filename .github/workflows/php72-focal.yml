@@ -1,0 +1,34 @@
+name: Experimental PHP 7.2 Focal build and regression tests
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: php72-focal-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  focal-amd64:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Download pinned Sury sources
+        run: bash download72.sh
+      - name: Build and test in isolated Ubuntu 20.04 amd64
+        shell: bash
+        run: |
+          mkdir -p out72
+          docker run --name php72-focal-build --platform linux/amd64 \
+            -v "$PWD:/repo:ro" -v "$PWD/sources72:/sources:ro" -v "$PWD/out72:/out" \
+            -e JOBS=4 ubuntu:20.04 bash -c 'bash /repo/build72.sh && bash /repo/test72-install.sh && bash /repo/test72-build.sh' \
+            2>&1 | tee out72/build.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: experimental-php72-focal-amd64
+          path: out72/
+          retention-days: 14

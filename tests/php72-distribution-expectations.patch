@@ -1,0 +1,28 @@
+--- a/tests/lang/bug45392.phpt
++++ b/tests/lang/bug45392.phpt
+@@ -20,4 +20,5 @@
+ ?>
+ --EXPECTF--
+ 2
++
+ Fatal error: Allowed memory size of %d bytes exhausted%s
+--- a/ext/session/tests/bug74514.phpt
++++ b/ext/session/tests/bug74514.phpt
+@@ -1,5 +1,7 @@
+ --TEST--
+ Bug #74514 5 session functions incorrectly warn when calling in read-only/getter mode.
++--INI--
++session.save_path=
+ --SKIPIF--
+ <?php
+ include('skipif.inc');
+--- a/ext/session/tests/bug74936.phpt
++++ b/ext/session/tests/bug74936.phpt
+@@ -1,5 +1,7 @@
+ --TEST--
+ Bug #74936 session_cache_expire() triggers a warning in read mode.
++--INI--
++session.save_path=
+ --SKIPIF--
+ <?php
+ include('skipif.inc');
